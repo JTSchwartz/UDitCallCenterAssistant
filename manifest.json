@@ -1,0 +1,33 @@
+{
+	"name": "UDit Call Center Assistant",
+	"description": "Assistant for UDit Call Center",
+	"version": "0.1",
+	"permissions": ["activeTab", "declarativeContent", "storage"],
+	"background": {
+		"scripts": ["background.js"],
+		"persistent": false
+	},
+	"content_scripts": [{
+		"css": ["CCAssistantStyles.css"],
+		"js": ["CCAssistantOnLoad.js"],
+		"matches": ["https://udayton.teamdynamix.com/*"],
+		"all_frames": true,
+		"run_at": "document_end"
+	}],
+	"page_action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "img/UDLogo16.png",
+			"32": "img/UDLogo32.png",
+			"48": "img/UDLogo48.png",
+			"128": "img/UDLogo128.png"
+		}
+	},
+	"icons": {
+		"16": "img/UDLogo16.png",
+		"32": "img/UDLogo32.png",
+		"48": "img/UDLogo48.png",
+		"128": "img/UDLogo128.png"
+	},
+	"manifest_version": 2
+}
