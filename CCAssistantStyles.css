@@ -7,6 +7,10 @@
 	background-color:#E2C928 !important;
 }
 
-.CCAssistant_Safe {
+.CCAssistant_OnHold {
+	background-color: #A5E9FF;
+}
 
+.CCAssistant_Safe {
+	background-color: #6DEF6D !important;
 }

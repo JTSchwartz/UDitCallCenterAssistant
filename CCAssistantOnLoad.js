@@ -6,7 +6,7 @@ chrome.storage.sync.get("enabled", async function (data) {
 			iframeWin = iframe.contentWindow || iframe,
 			iframeDoc = iframe.contentDocument || iframeWin.document;
 		
-		div = iframeDoc.getElementById("3826970");
+		div = iframeDoc.getElementById("Column2");
 		childDiv = div.getElementsByClassName("ModuleContent")[0];
 		table = childDiv.children[0].children[1];
 		
@@ -28,14 +28,12 @@ chrome.storage.sync.get("enabled", async function (data) {
 				row.classList.add("CCAssistant_Danger");
 			} else if (timeDif > 43200000) {
 				row.classList.add("CCAssistant_Warning");
+			} else if (status === "On Hold") {
+				row.classList.add("CCAssistant_OnHold");
 			} else {
 				row.classList.add("CCAssistant_Safe");
 			}
 		}
-		
-		delete div;
-		delete childDiv;
-		delete table;
 	}
 });
 

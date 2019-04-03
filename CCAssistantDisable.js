@@ -1,15 +1,8 @@
-danger = document.querySelectorAll(".CCAssistant_Danger");
-warning = document.querySelectorAll(".CCAssistant_Warning");
-safe = document.querySelectorAll(".CCAssistant_Safe");
+CCAssistant = [".CCAssistant_Danger", ".CCAssistant_Warning", ".CCAssistant_Safe", ".CCAssistant_OnHold"];
 
-for (let i = 0; i < safe.length; i++) {
-	safe[i].classList.remove("CCAssistant_Safe");
-}
-
-for (let i = 0; i < warning.length; i++) {
-	warning[i].classList.remove("CCAssistant_Warning");
-}
-
-for (let i = 0; i < danger.length; i++) {
-	danger[i].classList.remove("CCAssistant_Danger");
+for (let i = 0; i < CCAssistant.length; i++) {
+	let list = document.querySelectorAll(CCAssistant[i]);
+	for (let j = 0; j < list.length; j++) {
+		list[j].classList.remove(CCAssistant[i].substring(1));
+	}
 }
