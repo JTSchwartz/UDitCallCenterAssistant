@@ -1,16 +1,14 @@
 sleep(5000).then(() => {
-	let iframe = document.getElementById("appDesktop"),
-		iframeWin = iframe.contentWindow || iframe,
-		iframeDoc = iframe.contentDocument || iframeWin.document;
+	try {
+		iframe = document.getElementById("appDesktop"),
+			iframeWin = iframe.contentWindow || iframe,
+			iframeDoc = iframe.contentDocument || iframeWin.document;
+	} catch {
+		iframeDoc = document;
+	}
 	
-	// TODO: Get Desktop Refresh to work
 	iframeDoc.getElementById("btnRefresh").href = "javascript: window.location.reload()";
 	let queueRefreshBtn = iframeDoc.getElementById("Column2").getElementsByClassName("refreshAnchor")[0];
-	// console.log(refreshBtn);
-	
-	// refreshBtn.onclick = function () {
-	// 	refresher(5000);
-	// };
 	
 	queueRefreshBtn.onclick = function () {
 		refresher(3000);
