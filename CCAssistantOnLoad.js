@@ -90,8 +90,8 @@ chrome.storage.sync.get("refresh", function (data) {
 	CCAssistantAutoRefresh = data.refresh
 });
 
-sleep(5000).then(() => {
-	setInterval(refresh, 5000);
+sleep(600000).then(() => {
+	setInterval(refresh, 600000);
 	
 	function refresh() {
 		
