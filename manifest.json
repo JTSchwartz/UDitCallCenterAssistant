@@ -1,7 +1,7 @@
 {
 	"name": "UDit Call Center Assistant",
 	"description": "Assistant for UDit Call Center",
-	"version": "1.1",
+	"version": "1.2",
 	"permissions": ["activeTab", "declarativeContent", "storage"],
 	"background": {
 		"scripts": ["background.js"],
