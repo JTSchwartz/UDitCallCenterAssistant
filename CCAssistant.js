@@ -16,11 +16,13 @@ for (let i = 0; i < table.children.length; i++) {
 	let timeNow = new Date(Date.now());
 	let timeDif = timeNow - ticketTime;
 	
-	if (status === "New" || timeDif > 43200000) {
+	if (status === "New") {
+		row.classList.add("CCAssistant_New");
+	} else if (timeDif > 14400000) {
 		row.classList.add("CCAssistant_Danger");
-	} else if (timeDif > 28800000) {
+	} else if (timeDif > 7200000) {
 		row.classList.add("CCAssistant_Warning");
-	} else if (status === "On Hold") {
+	}else if (status === "On Hold") {
 		row.classList.add("CCAssistant_OnHold");
 	} else {
 		row.classList.add("CCAssistant_Safe");

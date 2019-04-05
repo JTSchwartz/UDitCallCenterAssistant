@@ -37,7 +37,7 @@ sleep(5000).then(() => {
 	};
 	
 	function disableAssistant() {
-		CCAssistant = [".CCAssistant_Danger", ".CCAssistant_Warning", ".CCAssistant_Safe", ".CCAssistant_OnHold"];
+		CCAssistant = [".CCAssistant_Danger", ".CCAssistant_Warning", ".CCAssistant_Safe", ".CCAssistant_OnHold", ".CCAssistant_New"];
 		
 		for (let i = 0; i < CCAssistant.length; i++) {
 			let list = document.querySelectorAll(CCAssistant[i]);
@@ -68,11 +68,13 @@ sleep(5000).then(() => {
 			
 			row.classList.remove("TDAlternatingRow");
 			
-			if (status === "New" || timeDif > 43200000) {
+			if (status === "New") {
+				row.classList.add("CCAssistant_New");
+			} else if (timeDif > 14400000) {
 				row.classList.add("CCAssistant_Danger");
-			} else if (timeDif > 28800000) {
+			} else if (timeDif > 7200000) {
 				row.classList.add("CCAssistant_Warning");
-			} else if (status === "On Hold") {
+			}else if (status === "On Hold") {
 				row.classList.add("CCAssistant_OnHold");
 			} else {
 				row.classList.add("CCAssistant_Safe");

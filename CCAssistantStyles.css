@@ -1,3 +1,7 @@
+.CCAssistant_New {
+	background-color: #A5E9FF !important;
+}
+
 .CCAssistant_Danger {
 	background-color: #F77878 !important;
 	font-weight: bold !important;
@@ -8,7 +12,7 @@
 }
 
 .CCAssistant_OnHold {
-	background-color: #A5E9FF !important;
+	/*background-color: #A5E9FF !important;*/
 }
 
 .CCAssistant_Safe {
