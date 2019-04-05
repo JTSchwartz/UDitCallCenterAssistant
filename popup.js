@@ -3,12 +3,10 @@ let refreshState = document.getElementById("AutoRefreshSwitch");
 
 chrome.storage.sync.get("enabled", function(data) {
 	changeAssistantState.checked = data.enabled;
-	changeAssistantState.setAttribute("value", data.enabled);
 });
 
 chrome.storage.sync.get("refresh", function(data) {
-	refreshState.checked = data.enabled;
-	refreshState.setAttribute("value", data.enabled);
+	refreshState.checked = data.refresh;
 });
 
 changeAssistantState.onclick = function () {
@@ -29,7 +27,6 @@ changeAssistantState.onclick = function () {
 	}
 	
 	changeAssistantState.checked = state;
-	changeAssistantState.setAttribute('value', (state ? "true" : "false"));
 	
 	chrome.storage.sync.set({enabled: state}, function() {
 		console.log("UDit Call Center Assistant has been " + (state ? "enabled" : "disabled"));
@@ -38,10 +35,6 @@ changeAssistantState.onclick = function () {
 
 refreshState.onclick = function () {
 	let state = refreshState.checked;
-	console.log("State " + state + " RefreshState " + refreshState.checked);
-	
-	refreshState.checked = state;
-	refreshState.setAttribute('value', (state ? "true" : "false"));
 	
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		chrome.tabs.executeScript(
@@ -49,7 +42,9 @@ refreshState.onclick = function () {
 			{allFrames: true, frameId: 0, code: "CCAssistantAutoRefresh = " + (state ? "true" : "false") + ";"});
 	});
 	
-	chrome.storage.sync.set({enabled: state}, function() {
+	refreshState.checked = state;
+	
+	chrome.storage.sync.set({refresh: state}, function() {
 		console.log("AutoRefresh has been " + (state ? "enabled" : "disabled"));
 	});
 };

@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(function() {
 		console.log('Modified Since Warning set to: 12 Hours');
 	});
 	chrome.storage.sync.set({refresh: false}, function() {
-		console.log('AutoRefresh has been enabled');
+		console.log('AutoRefresh is currently disabled');
 	});
 	chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
 		chrome.declarativeContent.onPageChanged.addRules([{
