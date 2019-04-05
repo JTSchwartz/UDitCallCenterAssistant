@@ -4,7 +4,7 @@
 }
 
 .CCAssistant_Warning {
-	background-color:#E2C928 !important;
+	background-color: rgba(226, 212, 30, 0.78) !important;
 }
 
 .CCAssistant_OnHold {
@@ -12,5 +12,5 @@
 }
 
 .CCAssistant_Safe {
-	background-color: #6DEF6D !important;
+	/*background-color: #6DEF6D !important;*/
 }
