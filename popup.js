@@ -16,13 +16,13 @@ changeAssistantState.onclick = function () {
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 			chrome.tabs.executeScript(
 				tabs[0].id,
-				{allFrames: true, frameId: 0, file: "CCAssistant.js"});
+				{allFrames: true, frameId: 0, code: "runAssistant()"});
 		});
 	} else {
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 			chrome.tabs.executeScript(
 				tabs[0].id,
-				{allFrames: true, frameId: 0, file: "CCAssistantDisable.js"});
+				{allFrames: true, frameId: 0, code: "disableAssistant();"});
 		});
 	}
 	

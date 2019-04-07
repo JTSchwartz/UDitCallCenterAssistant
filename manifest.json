@@ -1,7 +1,7 @@
 {
 	"name": "UDit Call Center Assistant",
 	"description": "Assistant for UDit Call Center",
-	"version": "1.6",
+	"version": "1.7",
 	"permissions": ["activeTab", "declarativeContent", "storage"],
 	"background": {
 		"scripts": ["background.js"],
@@ -9,7 +9,7 @@
 	},
 	"content_scripts": [{
 		"css": ["CCAssistantStyles.css"],
-		"js": ["CCAssistantOnLoad.js"],
+		"js": ["CCAssistant.js"],
 		"matches": ["https://udayton.teamdynamix.com/*"],
 		"all_frames": true,
 		"run_at": "document_end"
