@@ -10,7 +10,6 @@ try {
 
 // ASSISTANT
 sleep(5000).then(() => {
-	
 	iframeDoc.getElementById("btnRefresh").href = "javascript: window.location.reload()";
 	let queueRefreshBtn = iframeDoc.getElementById("Column2").getElementsByClassName("refreshAnchor")[0];
 	
@@ -19,7 +18,6 @@ sleep(5000).then(() => {
 	};
 	
 	chrome.storage.sync.get("enabled", function (data) {
-		
 		if (data.enabled) {
 			runAssistant();
 		}
@@ -38,7 +36,6 @@ sleep(600000).then(() => {
 	setInterval(refresh, 600000);
 	
 	function refresh() {
-		
 		if (CCAssistantAutoRefresh) {
 			window.location.reload();
 		}
@@ -46,9 +43,7 @@ sleep(600000).then(() => {
 });
 
 // FUNCTIONS
-
 function refresher(time) {
-	
 	chrome.storage.sync.get("enabled", async function (data) {
 		await sleep(time);
 		
@@ -64,6 +59,7 @@ function runAssistant() {
 	let table = childDiv.children[0].children[1];
 	
 	for (let i = 0; i < table.children.length; i++) {
+		console.log("Reading Row: " + i);
 		let row = table.children[i];
 		let status = row.children[4].innerText;
 		let timestampString = row.children[6].innerText;
@@ -83,7 +79,7 @@ function runAssistant() {
 			row.classList.add("CCAssistant_Danger");
 		} else if (timeDif > 7200000) {
 			row.classList.add("CCAssistant_Warning");
-		}else if (status === "On Hold") {
+		} else if (status === "On Hold") {
 			row.classList.add("CCAssistant_OnHold");
 		} else {
 			row.classList.add("CCAssistant_Safe");
