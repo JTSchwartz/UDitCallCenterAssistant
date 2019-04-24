@@ -59,7 +59,6 @@ function runAssistant() {
 	let table = childDiv.children[0].children[1];
 	
 	for (let i = 0; i < table.children.length; i++) {
-		console.log("Reading Row: " + i);
 		let row = table.children[i];
 		let status = row.children[4].innerText;
 		let timestampString = row.children[6].innerText;
@@ -67,7 +66,11 @@ function runAssistant() {
 		let date = timeArray[0].split("/");
 		let time = timeArray[1].split(":");
 		
-		if (timeArray[2] === "PM") time[0] = (parseInt(time[0]) + 12).toString();
+		if (timeArray[2] === "PM" && parseInt(time[0]) < 12) {
+			time[0] = (parseInt(time[0]) + 12).toString();
+		} else if (timeArray[2] === "AM" && parseInt(time[0]) === 12) {
+			time[0] = "0";
+		}
 		
 		let ticketTime = new Date(parseInt(date[2]) + 2000, parseInt(date[0]) - 1, parseInt(date[1]), parseInt(time[0]), parseInt(time[1]), 0, 0);
 		let timeNow = new Date(Date.now());
