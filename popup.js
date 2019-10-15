@@ -1,11 +1,13 @@
 let changeCCAssistantState = document.getElementById("CCAssistantSwitch");
 let changeITSCAssistantState = document.getElementById("ITSCAssistantSwitch");
 let refreshState = document.getElementById("AutoRefreshSwitch");
+let notificationsState = document.getElementById("NotificationsSwitch");
 
-chrome.storage.sync.get(["enabled", "itsc", "refresh"], function(data) {
+chrome.storage.sync.get(["enabled", "itsc", "refresh", "notifications"], function(data) {
 	changeCCAssistantState.checked = data.enabled;
 	changeITSCAssistantState.checked = data.itsc;
 	refreshState.checked = data.refresh;
+	notificationsState.checked = data.notifications;
 });
 
 changeCCAssistantState.onclick = function () {
@@ -69,5 +71,21 @@ refreshState.onclick = function () {
 	
 	chrome.storage.sync.set({refresh: state}, function() {
 		console.log("AutoRefresh has been " + (state ? "enabled" : "disabled"));
+	});
+};
+
+notificationsState.onclick = function () {
+	let state = notificationsState.checked;
+	
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		chrome.tabs.executeScript(
+			tabs[0].id,
+			{allFrames: true, frameId: 0, code: "CCAssistantNotifications = " + (state ? "true" : "false") + ";"});
+	});
+	
+	notificationsState.checked = state;
+	
+	chrome.storage.sync.set({notifications: state}, function() {
+		console.log("Notifications have been " + (state ? "enabled" : "disabled"));
 	});
 };

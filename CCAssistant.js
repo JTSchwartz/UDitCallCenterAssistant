@@ -132,7 +132,6 @@ function disableCCAssistant() {
 }
 
 function runITSCAssistant() {
-	showNewTicketNotification();
 	let queues = iframeDoc.getElementsByClassName("desktop-module");
 	
 	// Using a foreach causes issues when destructuring the objects
@@ -163,13 +162,6 @@ function runITSCAssistant() {
 	}
 }
 
-function showNewTicketNotification() {
-	if ((new Date() - lastNotificationSent) < (10 * MIN)) return;
-	lastNotificationSent = new Date();
-	
-	chrome.runtime.sendMessage({greeting: "newTicketNotification"}, function(response) {});
-}
-
 function disableITSCAssistant() {
 	let ITSCAssistant = [".ITSCAssistant_Danger", ".ITSCAssistant_Warning", ".ITSCAssistant_New"];
 	
@@ -179,6 +171,19 @@ function disableITSCAssistant() {
 			list[j].classList.remove(ITSCAssistant[i].substring(1));
 		}
 	}
+}
+
+let CCAssistantNotifications = true;
+
+chrome.storage.sync.get("notifications", function (data) {
+	CCAssistantNotifications = data.notifications
+});
+
+function showNewTicketNotification() {
+	if ((new Date() - lastNotificationSent) < (10 * MIN) && CCAssistantNotifications) return;
+	lastNotificationSent = new Date();
+	
+	chrome.runtime.sendMessage({greeting: "newTicketNotification"}, function(response) {});
 }
 
 function unmodifiedSince(timestampString) {

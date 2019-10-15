@@ -1,14 +1,18 @@
 chrome.runtime.onInstalled.addListener(function () {
 	chrome.storage.sync.set({enabled: true}, function () {
-		console.log("UDit Call Center Assistant has been enabled");
+		console.log("UDit Call Center Assistant is currently enabled");
 	});
 	
 	chrome.storage.sync.set({itsc: false}, function () {
-		console.log("UDit ITSC Assistant has been enabled");
+		console.log("UDit ITSC Assistant is currently disabled");
 	});
 	
 	chrome.storage.sync.set({refresh: true}, function () {
 		console.log("AutoRefresh is currently enabled");
+	});
+	
+	chrome.storage.sync.set({notifications: true}, function () {
+		console.log("Notifications are currently enabled");
 	});
 	
 	chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
