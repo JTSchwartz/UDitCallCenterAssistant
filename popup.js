@@ -1,35 +1,58 @@
-let changeAssistantState = document.getElementById("CCAssistantSwitch");
+let changeCCAssistantState = document.getElementById("CCAssistantSwitch");
+let changeITSCAssistantState = document.getElementById("ITSCAssistantSwitch");
 let refreshState = document.getElementById("AutoRefreshSwitch");
 
-chrome.storage.sync.get("enabled", function(data) {
-	changeAssistantState.checked = data.enabled;
-});
-
-chrome.storage.sync.get("refresh", function(data) {
+chrome.storage.sync.get(["enabled", "itsc", "refresh"], function(data) {
+	changeCCAssistantState.checked = data.enabled;
+	changeITSCAssistantState.checked = data.itsc;
 	refreshState.checked = data.refresh;
 });
 
-changeAssistantState.onclick = function () {
-	let state = changeAssistantState.checked;
+changeCCAssistantState.onclick = function () {
+	let state = changeCCAssistantState.checked;
 	
 	if (state) {
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 			chrome.tabs.executeScript(
 				tabs[0].id,
-				{allFrames: true, frameId: 0, code: "runAssistant()"});
+				{allFrames: true, frameId: 0, code: "runCCAssistant()"});
 		});
 	} else {
 		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 			chrome.tabs.executeScript(
 				tabs[0].id,
-				{allFrames: true, frameId: 0, code: "disableAssistant();"});
+				{allFrames: true, frameId: 0, code: "disableCCAssistant();"});
 		});
 	}
 	
-	changeAssistantState.checked = state;
+	changeCCAssistantState.checked = state;
 	
 	chrome.storage.sync.set({enabled: state}, function() {
 		console.log("UDit Call Center Assistant has been " + (state ? "enabled" : "disabled"));
+	});
+};
+
+changeITSCAssistantState.onclick = function () {
+	let state = changeITSCAssistantState.checked;
+	
+	if (state) {
+		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+			chrome.tabs.executeScript(
+				tabs[0].id,
+				{allFrames: true, frameId: 0, code: "runITSCAssistant()"});
+		});
+	} else {
+		chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+			chrome.tabs.executeScript(
+				tabs[0].id,
+				{allFrames: true, frameId: 0, code: "disableITSCAssistant();"});
+		});
+	}
+	
+	changeITSCAssistantState.checked = state;
+	
+	chrome.storage.sync.set({itsc: state}, function() {
+		console.log("UDit ITSC Assistant has been " + (state ? "enabled" : "disabled"));
 	});
 };
 
