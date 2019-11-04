@@ -40,18 +40,26 @@ sleep(5 * SEC).then(() => {
 
 // AUTO-REFRESHING
 let CCAssistantAutoRefresh = true;
+let CCInterval = 6;
 
-chrome.storage.sync.get("refresh", function (data) {
-	CCAssistantAutoRefresh = data.refresh
+chrome.storage.sync.get(["refresh", "interval"], function (data) {
+	CCAssistantAutoRefresh = data.refresh;
+	CCInterval = data.interval
 });
 
-sleep(10 * MIN).then(() => {
-	setInterval(refresh, 600000);
+sleep(CCInterval * MIN).then(() => {
+	// Use Timeout instead of Interval so that refresh interval can be adjusted
+	setTimeout(refresh, CCInterval * MIN);
 	
 	function refresh() {
-		if (CCAssistantAutoRefresh) {
+		let onDesktop = iframeDoc.getElementById("lblDesktops");
+		if (onDesktop) onDesktop = onDesktop.offsetParent;
+		
+		if (CCAssistantAutoRefresh && onDesktop) {
 			window.location.reload();
 		}
+		
+		setTimeout(refresh, CCInterval * MIN);
 	}
 });
 

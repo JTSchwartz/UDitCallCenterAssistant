@@ -2,12 +2,17 @@ let changeCCAssistantState = document.getElementById("CCAssistantSwitch");
 let changeITSCAssistantState = document.getElementById("ITSCAssistantSwitch");
 let refreshState = document.getElementById("AutoRefreshSwitch");
 let notificationsState = document.getElementById("NotificationsSwitch");
+let refreshTimeRange = document.getElementById("refreshTime");
+let refreshTimeDisplay = document.getElementById("intervalDisplay");
 
-chrome.storage.sync.get(["enabled", "itsc", "refresh", "notifications"], function(data) {
+chrome.storage.sync.get(["enabled", "itsc", "refresh", "notifications", "interval"], function(data) {
 	changeCCAssistantState.checked = data.enabled;
 	changeITSCAssistantState.checked = data.itsc;
 	refreshState.checked = data.refresh;
 	notificationsState.checked = data.notifications;
+	refreshTimeRange.value = data.interval;
+	refreshTimeRange.disabled = !data.refresh;
+	refreshTimeDisplay.innerText = `${data.interval} Mins`
 });
 
 changeCCAssistantState.onclick = function () {
@@ -30,7 +35,7 @@ changeCCAssistantState.onclick = function () {
 	changeCCAssistantState.checked = state;
 	
 	chrome.storage.sync.set({enabled: state}, function() {
-		console.log("UDit Call Center Assistant has been " + (state ? "enabled" : "disabled"));
+		console.log(`UDit Call Center Assistant has been ${state ? "enabled" : "disabled"}`);
 	});
 };
 
@@ -54,17 +59,18 @@ changeITSCAssistantState.onclick = function () {
 	changeITSCAssistantState.checked = state;
 	
 	chrome.storage.sync.set({itsc: state}, function() {
-		console.log("UDit ITSC Assistant has been " + (state ? "enabled" : "disabled"));
+		console.log(`UDit ITSC Assistant has been ${state ? "enabled" : "disabled"}`);
 	});
 };
 
 refreshState.onclick = function () {
 	let state = refreshState.checked;
+	refreshTimeRange.disabled = !state;
 	
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		chrome.tabs.executeScript(
 			tabs[0].id,
-			{allFrames: true, frameId: 0, code: "CCAssistantAutoRefresh = " + (state ? "true" : "false") + ";"});
+			{allFrames: true, frameId: 0, code: `CCAssistantAutoRefresh = ${state ? "true" : "false"};`});
 	});
 	
 	refreshState.checked = state;
@@ -80,12 +86,29 @@ notificationsState.onclick = function () {
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		chrome.tabs.executeScript(
 			tabs[0].id,
-			{allFrames: true, frameId: 0, code: "CCAssistantNotifications = " + (state ? "true" : "false") + ";"});
+			{allFrames: true, frameId: 0, code: `CCAssistantNotifications = ${state ? "true" : "false"};`});
 	});
 	
 	notificationsState.checked = state;
 	
 	chrome.storage.sync.set({notifications: state}, function() {
 		console.log("Notifications have been " + (state ? "enabled" : "disabled"));
+	});
+};
+
+refreshTimeRange.oninput = function () {
+	let interval = refreshTimeRange.value;
+	refreshTimeDisplay.innerText = `${interval} Mins`;
+	
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		chrome.tabs.executeScript(
+			tabs[0].id,
+			{allFrames: true, frameId: 0, code: `CCInterval = ${interval}`});
+	});
+	
+	refreshTimeRange.value = interval;
+	
+	chrome.storage.sync.set({interval: interval}, function() {
+		console.log(`Notifications have been ${interval}`);
 	});
 };

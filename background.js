@@ -15,6 +15,10 @@ chrome.runtime.onInstalled.addListener(function () {
 		console.log("Notifications are currently enabled");
 	});
 	
+	chrome.storage.sync.set({interval: 6}, function () {
+		console.log("Notification interval set");
+	});
+	
 	chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
 		chrome.declarativeContent.onPageChanged.addRules([{
 			conditions: [new chrome.declarativeContent.PageStateMatcher({

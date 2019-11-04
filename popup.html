@@ -1,44 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<meta charset="UTF-8">
 	<title>Popup Menu</title>
 	<style>
 		body {
 			background: #1E1E1E;
-			width: 16em;
+			width: 26em;
 			color: #999999;
 			text-align: center;
 		}
-
+		
 		.onoffswitch {
-			position: relative; width: 110px;
-			-webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+			position: relative;
+			width: 110px;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
 			margin: auto;
 		}
+		
 		.onoffswitch-checkbox {
 			display: none;
 		}
+		
 		.onoffswitch-label {
-			display: block; overflow: hidden; cursor: pointer;
-			border: 2px solid #999999; border-radius: 10px;
+			display: block;
+			overflow: hidden;
+			cursor: pointer;
+			border: 2px solid #999999;
+			border-radius: 10px;
 		}
+		
 		.onoffswitch-inner {
 			color: #454545;
-			display: block; width: 200%; margin-left: -100%;
+			display: block;
+			width: 200%;
+			margin-left: -100%;
 			transition: margin 0.3s ease-in 0s;
 		}
+		
 		.onoffswitch-inner:before, .onoffswitch-inner:after {
-			display: block; float: left; width: 50%; height: 32px; padding: 0; line-height: 32px;
-			font-size: 14px; color: white; font-family: Verdana, Arial, sans-serif; font-weight: bold;
+			display: block;
+			float: left;
+			width: 50%;
+			height: 32px;
+			padding: 0;
+			line-height: 32px;
+			font-size: 14px;
+			color: white;
+			font-family: Verdana, Arial, sans-serif;
+			font-weight: bold;
 			box-sizing: border-box;
 		}
+		
 		.onoffswitch-inner:before {
 			content: "Enabled";
 			padding-right: 20px;
 			background-color: #00CC1B;
 			color: #454545;
 		}
+		
 		.onoffswitch-inner:after {
 			content: "Disabled";
 			padding-right: 6px;
@@ -46,95 +72,131 @@
 			color: #E4E4E4;
 			text-align: right;
 		}
+		
 		.onoffswitch-switch {
-			display: block; width: 18px; margin: 7px;
+			display: block;
+			width: 18px;
+			margin: 7px;
 			background: #CCCCCC;
-			position: absolute; top: 0; bottom: 0;
+			position: absolute;
+			top: 0;
+			bottom: 0;
 			right: 74px;
-			border: 2px solid #999999; border-radius: 10px;
+			border: 2px solid #999999;
+			border-radius: 10px;
 			transition: all 0.3s ease-in 0s;
 		}
+		
 		.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
 			margin-left: 0;
 		}
+		
 		.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
 			right: 0px;
 		}
 		
-		/* Version Tooltip */
-		 #version {
-			 position: absolute;
-			 display: inline-block;
-			 top: 2px;
-			 left: 5px;
-			 cursor: pointer;
-		 }
-		 
-		 #versionsymbol {
-			 font-size: 25px;
-		 }
-		
-		#version #versiontext {
-			visibility: hidden;
-			width: 120px;
-			background-color: black;
-			border: 1px solid white;
-			color: #fff;
-			text-align: center;
-			padding: 5px 0;
-			border-radius: 6px;
-			position: absolute;
-			z-index: 1;
+		.slider {
+			-webkit-appearance: none;
+			width: 100%;
+			height: 10px;
+			border-radius: 5px;
+			background: #CCCCCC;
+			outline: none;
+			opacity: 0.7;
+			-webkit-transition: .2s;
+			transition: opacity .2s;
 		}
 		
-		
-		#version:hover #versiontext {
-			visibility: visible;
+		.slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background: #00CC1B;
+			cursor: pointer;
 		}
 		
+		.slider::-moz-range-thumb {
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background: #00CC1B;
+			cursor: pointer;
+		}
+		
+		.slider[disabled]::-webkit-slider-thumb {
+			background: #FF0000;
+		}
+		
+		.slider[disabled]::-moz-range-thumb {
+			background: #FF0000;
+		}
+		
+		.btn:focus {
+			box-shadow: none !important;
+		}
 	</style>
 </head>
 <body>
-	<div id="version">
-		<span id="versionsymbol">&#9432;</span>
-		<span id="versiontext">Version: 2.2.0</span>
+<div class="container-fluid no-gutters mt-2">
+	<div class="row">
+		<div class="col">
+			<strong>Call Center Assistant</strong>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="CCAssistantSwitch" checked>
+				<label class="onoffswitch-label" for="CCAssistantSwitch">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div>
+			
+			<strong>ITSC Assistant</strong>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="ITSCAssistantSwitch" checked>
+				<label class="onoffswitch-label" for="ITSCAssistantSwitch">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div>
+		</div>
+		
+		<div class="col">
+			<strong>Notifications</strong>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="NotificationsSwitch" checked>
+				<label class="onoffswitch-label" for="NotificationsSwitch">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div>
+			
+			<strong>Auto Refresh</strong>
+			<div class="onoffswitch">
+				<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="AutoRefreshSwitch" checked>
+				<label class="onoffswitch-label" for="AutoRefreshSwitch">
+					<span class="onoffswitch-inner"></span>
+					<span class="onoffswitch-switch"></span>
+				</label>
+			</div>
+		</div>
 	</div>
-	
-	<h2>Auto Refresh</h2>
-	<div class="onoffswitch">
-		<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="AutoRefreshSwitch" checked>
-		<label class="onoffswitch-label" for="AutoRefreshSwitch">
-			<span class="onoffswitch-inner"></span>
-			<span class="onoffswitch-switch"></span>
-		</label>
+	<div class="row">
+		<div>
+			<button type="button" class="btn text-white fixed-bottom" data-toggle="tooltip" data-placement="left" title="Version: 3.0.1">
+				&#9432;
+			</button>
+		</div>
+		<div class="col-12 pb-3">
+			<form>
+				<div class="form-group">
+					<label for="refreshTime">Refresh Interval: <span id="intervalDisplay"></span></label>
+					<input type="range" class="form-control-range slider" id="refreshTime" min="2" max="10" step="1" value="6">
+				</div>
+			</form>
+		</div>
 	</div>
-	
-	<h2>Call Center Assistant</h2>
-	<div class="onoffswitch">
-		<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="CCAssistantSwitch" checked>
-		<label class="onoffswitch-label" for="CCAssistantSwitch">
-			<span class="onoffswitch-inner"></span>
-			<span class="onoffswitch-switch"></span>
-		</label>
-	</div>
-	
-	<h2>ITSC Assistant</h2>
-	<div class="onoffswitch">
-		<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="ITSCAssistantSwitch" checked>
-		<label class="onoffswitch-label" for="ITSCAssistantSwitch">
-			<span class="onoffswitch-inner"></span>
-			<span class="onoffswitch-switch"></span>
-		</label>
-	</div>
-	
-	<h2>Notifications</h2>
-	<div class="onoffswitch">
-		<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="NotificationsSwitch" checked>
-		<label class="onoffswitch-label" for="NotificationsSwitch">
-			<span class="onoffswitch-inner"></span>
-			<span class="onoffswitch-switch"></span>
-		</label>
-	</div>
-	<script src="popup.js"></script>
+</div>
+<script src="popup.js"></script>
 </body>
 </html>
