@@ -1,7 +1,6 @@
 {
 	"name": "UDit Call Center Assistant",
 	"description": "Assistant for UDit Call Center and ITSC Review Queue",
-ColeWeslow
 	"version": "3.2.1",
 	"permissions": ["activeTab", "declarativeContent","notifications", "storage"],
 	"background": {
