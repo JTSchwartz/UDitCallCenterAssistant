@@ -1,0 +1,20 @@
+.CCAssistant_New, .ITSCAssistant_New {
+	background-color: #A5E9FF !important;
+}
+
+.CCAssistant_Danger, .ITSCAssistant_Danger {
+	background-color: #F77878 !important;
+	font-weight: bold !important;
+}
+
+.CCAssistant_Warning, .ITSCAssistant_Warning {
+	background-color: rgba(226, 212, 30, 0.78) !important;
+}
+
+.CCAssistant_OnHold {
+	/*background-color: #A5E9FF !important;*/
+}
+
+.CCAssistant_Safe {
+	/*background-color: #6DEF6D !important;*/
+}
