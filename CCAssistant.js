@@ -7,7 +7,8 @@ const SEC = 1000;
 
 // Declare what functions to be run on which tables
 let assistantQueues = {
-	"CC Queue": runCCQueue
+	"CC Queue": runCCQueue,
+	"CC In Process Queue": runCCInProcess
 };
 
 let lastNotificationSent = new Date() + (10 * MIN);
@@ -121,6 +122,23 @@ function runCCQueue(table) {
 			row.classList.add("CCAssistant_Warning");
 		} else if (status === "On Hold") {
 			row.classList.add("CCAssistant_OnHold");
+		} else {
+			row.classList.add("CCAssistant_Safe");
+		}
+	}
+}
+
+function runCCInProcess(table) {
+	for (let i = 0; i < table.children.length; i++) {
+		let row = table.children[i];
+		let status = row.children[4].innerText;
+		let timestampString = row.children[6].innerText;
+		let timeDif = unmodifiedSince(timestampString);
+
+		if (timeDif > 4 * HOUR) {
+			row.classList.add("CCAssistant_Danger");
+		} else if (timeDif > 2 * HOUR) {
+			row.classList.add("CCAssistant_Warning");
 		} else {
 			row.classList.add("CCAssistant_Safe");
 		}
