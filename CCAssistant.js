@@ -99,18 +99,25 @@ function runCCAssistant() {
 	let queues = iframeDoc.getElementsByClassName("desktop-module");
 	
 	// Using a foreach causes issues when destructuring the objects
+	console.log(queues)
 	for (let i = 0; i < queues.length; i++) {
 		let title = queues[i].getElementsByTagName("h4")[0].innerText;
 		let table = queues[i].children[1].children[0].children[0];
-		if (table) if (Object.keys(assistantQueues).includes(title)) assistantQueues[title](table.children[1]);
+		if (table) {
+			if (Object.keys(assistantQueues).includes(title)) {
+				assistantQueues[title](table.children[1]);
+			}
+		}
 	}
 }
 
-function runCCQueue(table) {
+function runCCQueue(table, statusCol = 4, timestampCol = 5) {
+	console.log(table)
 	for (let i = 0; i < table.children.length; i++) {
 		let row = table.children[i];
-		let status = row.children[4].innerText;
-		let timestampString = row.children[6].innerText;
+		let status = row.children[statusCol].innerText;
+		console.log(status)
+		let timestampString = row.children[timestampCol].innerText;
 		let timeDif = unmodifiedSince(timestampString);
 		
 		if (status === "New") {
