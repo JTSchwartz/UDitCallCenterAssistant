@@ -5,10 +5,19 @@ const HOUR = 3600000;
 const MIN = 60000;
 const SEC = 1000;
 
+class QueueModel {
+	constructor(timestampCol = null, statusCol = null) {
+		this.timestampCol = timestampCol
+		this.statusCol = statusCol
+	}
+}
+
 // Declare what functions to be run on which tables
 let assistantQueues = {
-	"CC Queue": runCCQueue,
-	"CC In Process Queue": runCCInProcess
+	"CC Queue": new QueueModel(5, 4),
+	"CC In Process Queue": new QueueModel(4),
+	"Classroom Urgent": new QueueModel(4, 3),
+	"CC Maintenance/Project Queue": new QueueModel(4, 6)
 };
 
 let lastNotificationSent = new Date() + (10 * MIN);
@@ -99,49 +108,60 @@ function runCCAssistant() {
 	let queues = iframeDoc.getElementsByClassName("desktop-module");
 	
 	// Using a foreach causes issues when destructuring the objects
+	console.log(queues)
 	for (let i = 0; i < queues.length; i++) {
 		let title = queues[i].getElementsByTagName("h4")[0].innerText;
 		let table = queues[i].children[1].children[0].children[0];
-		if (table) if (Object.keys(assistantQueues).includes(title)) assistantQueues[title](table.children[1]);
+		if (table) {
+			if (Object.keys(assistantQueues).includes(title)) {
+				colorQueues(table.children[1], assistantQueues[title])
+				// (table.children[1]);
+			}
+		}
 	}
 }
 
-function runCCQueue(table) {
+function colorQueues(table, model) {
+	console.log(table)
 	for (let i = 0; i < table.children.length; i++) {
 		let row = table.children[i];
-		let status = row.children[4].innerText;
-		let timestampString = row.children[6].innerText;
+		console.log(status)
+		let timestampString = row.children[model.timestampCol].innerText;
 		let timeDif = unmodifiedSince(timestampString);
 		
-		if (status === "New") {
-			row.classList.add("CCAssistant_New");
-			showNewTicketNotification();
-		} else if (timeDif > 4 * HOUR) {
-			row.classList.add("CCAssistant_Danger");
-		} else if (timeDif > 2 * HOUR) {
-			row.classList.add("CCAssistant_Warning");
-		} else if (status === "On Hold") {
-			row.classList.add("CCAssistant_OnHold");
+		if (model.statusCol != null) {
+			colorOnStatusAndTime(row, timeDif, model.statusCol)
+		} else if (model.timestampCol != null) {
+			colorOnTime(row, timeDif)
 		} else {
-			row.classList.add("CCAssistant_Safe");
+			row.classList.add("CCAssistant_Danger");
 		}
 	}
 }
 
-function runCCInProcess(table) {
-	for (let i = 0; i < table.children.length; i++) {
-		let row = table.children[i];
-		let status = row.children[4].innerText;
-		let timestampString = row.children[6].innerText;
-		let timeDif = unmodifiedSince(timestampString);
+function colorOnStatusAndTime(row, timeDif, statusCol) {
+	let status = row.children[statusCol].innerText;
+	if (status === "New") {
+		row.classList.add("CCAssistant_New");
+		showNewTicketNotification();
+	} else if (timeDif > 4 * HOUR) {
+		row.classList.add("CCAssistant_Danger");
+	} else if (timeDif > 2 * HOUR) {
+		row.classList.add("CCAssistant_Warning");
+	} else if (status === "On Hold") {
+		row.classList.add("CCAssistant_OnHold");
+	} else {
+		row.classList.add("CCAssistant_Safe");
+	}
+}
 
-		if (timeDif > 4 * HOUR) {
-			row.classList.add("CCAssistant_Danger");
-		} else if (timeDif > 2 * HOUR) {
-			row.classList.add("CCAssistant_Warning");
-		} else {
-			row.classList.add("CCAssistant_Safe");
-		}
+function colorOnTime(row, timeDif) {
+	if (timeDif > 4 * HOUR) {
+		row.classList.add("CCAssistant_Danger");
+	} else if (timeDif > 2 * HOUR) {
+		row.classList.add("CCAssistant_Warning");
+	} else {
+		row.classList.add("CCAssistant_Safe");
 	}
 }
 
@@ -166,7 +186,7 @@ function runITSCAssistant() {
 		
 		if (title === "ITSC Review Queue" && table) {
 			table = table.children[1];
-
+			
 			for (let j = 0; j < table.children.length; j++) {
 				let row = table.children[j];
 				let timestampString = row.children[3].innerText;
@@ -209,7 +229,8 @@ function showNewTicketNotification() {
 	if ((new Date() - lastNotificationSent) < (10 * MIN) && CCAssistantNotifications) return;
 	lastNotificationSent = new Date();
 	
-	chrome.runtime.sendMessage({greeting: "newTicketNotification"}, function(response) {});
+	chrome.runtime.sendMessage({greeting: "newTicketNotification"}, function (response) {
+	});
 }
 
 function unmodifiedSince(timestampString) {
